@@ -1,0 +1,322 @@
+---
+import { TEMPLE_INFO } from '@/data/temple';
+import TirunamamEmblem from './TirunamamEmblem.astro';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about/', label: 'About' },
+  { href: '/timings/', label: 'Darshan Timings' },
+  { href: '/pooja-seva/', label: 'Pooja & Seva' },
+  { href: '/festivals/', label: 'Festivals' },
+  { href: '/gallery/', label: 'Gallery' },
+  { href: '/contact/', label: 'Contact' }
+];
+
+const isActive = (href: string) =>
+  href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="brand-link" aria-label={`${TEMPLE_INFO.name} Home`}>
+      <TirunamamEmblem size={38} variant="light" class="brand-emblem" />
+      <span class="brand-text">
+        <span class="brand-title">{TEMPLE_INFO.name}</span>
+        <span class="brand-sub">{TEMPLE_INFO.alternateName} · Peelamedu</span>
+      </span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <ul>
+        {
+          navLinks.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[{ active: isActive(item.href) }]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-nav-drawer"
+      aria-label="Open navigation menu"
+    >
+      <span class="menu-bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="menu-label">Menu</span>
+    </button>
+  </div>
+
+  <nav
+    id="mobile-nav-drawer"
+    class="mobile-drawer"
+    aria-label="Mobile navigation"
+    hidden
+  >
+    <div class="container">
+      <ul>
+        {
+          navLinks.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[{ active: isActive(item.href) }]}
+              >
+                <span>{item.label}</span>
+                <span aria-hidden="true" class="chevron">›</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="drawer-actions">
+        <a
+          href={TEMPLE_INFO.googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-gold drawer-btn"
+        >
+          Get Directions
+        </a>
+        <a href={TEMPLE_INFO.contact.phoneHref} class="btn btn-outline-ivory drawer-btn">
+          Call {TEMPLE_INFO.contact.phoneDisplay}
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggleBtn = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const drawer = document.querySelector<HTMLElement>('#mobile-nav-drawer');
+
+  if (toggleBtn && drawer) {
+    const labelEl = toggleBtn.querySelector('.menu-label');
+    const setOpen = (open: boolean) => {
+      toggleBtn.setAttribute('aria-expanded', String(open));
+      toggleBtn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+      if (labelEl) labelEl.textContent = open ? 'Close' : 'Menu';
+      drawer.hidden = !open;
+    };
+
+    toggleBtn.addEventListener('click', () => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      setOpen(!expanded);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !drawer.hidden) {
+        setOpen(false);
+        toggleBtn.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    background-color: var(--color-maroon-dark);
+    color: var(--color-ivory-warm);
+    border-bottom: 2px solid var(--color-gold-antique);
+    box-shadow: var(--shadow-header);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-height: var(--header-height);
+    padding-block: 0.45rem;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    color: var(--color-ivory-warm);
+    min-width: 0;
+  }
+
+  .brand-emblem {
+    flex-shrink: 0;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .brand-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1rem, 3.6vw, 1.25rem);
+    line-height: 1.15;
+    color: var(--color-ivory-warm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .brand-sub {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-gold-soft);
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.45rem 0.75rem;
+    background-color: rgba(197, 155, 67, 0.14);
+    border: 1px solid rgba(197, 155, 67, 0.48);
+    border-radius: var(--radius-sm);
+    color: var(--color-ivory-warm);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .menu-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5px;
+    width: 16px;
+  }
+
+  .menu-bars span {
+    display: block;
+    height: 1.8px;
+    width: 100%;
+    background-color: var(--color-gold-soft);
+    border-radius: 2px;
+  }
+
+  .mobile-drawer {
+    background-color: var(--color-maroon-deep);
+    border-top: 1px solid rgba(197, 155, 67, 0.32);
+    padding-block: var(--space-3) var(--space-5);
+  }
+
+  .mobile-drawer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-drawer li + li {
+    border-top: 1px solid rgba(250, 245, 235, 0.1);
+  }
+
+  .mobile-drawer li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 0.65rem 0.25rem;
+    color: var(--color-ivory-warm);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+  .mobile-drawer li a.active {
+    color: var(--color-gold-bright);
+    font-weight: 700;
+  }
+
+  .chevron {
+    color: var(--color-gold-antique);
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .drawer-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .drawer-btn {
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .menu-toggle,
+    .mobile-drawer {
+      display: none !important;
+    }
+
+    .desktop-nav {
+      display: block;
+    }
+
+    .desktop-nav ul {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .desktop-nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0.4rem 0.68rem;
+      border-radius: var(--radius-sm);
+      color: var(--color-ivory-warm);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .desktop-nav a:hover {
+      background-color: rgba(197, 155, 67, 0.15);
+      color: var(--color-gold-soft);
+    }
+
+    .desktop-nav a.active {
+      color: var(--color-gold-bright);
+      background-color: rgba(197, 155, 67, 0.18);
+      font-weight: 600;
+    }
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import DirectionsCard from '@/components/DirectionsCard.astro';
+import NoticeBanner from '@/components/NoticeBanner.astro';
+import { TEMPLE_INFO } from '@/data/temple';
+---
+
+<BaseLayout
+  title="Contact & Location"
+  description={`Verified address, Google Maps directions, and temple enquiry details for ${TEMPLE_INFO.name} (${TEMPLE_INFO.alternateName}) in Peelamedu, Coimbatore.`}
+>
+  <section class="page-banner">
+    <div class="container">
+      <span class="eyebrow" style="color: var(--color-gold-bright)">Visit the Temple</span>
+      <h1>Contact &amp; Location</h1>
+      <p>
+        {TEMPLE_INFO.address.locality}, {TEMPLE_INFO.address.area}, {TEMPLE_INFO.address.city}
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-wrap">
+      <DirectionsCard />
+
+      <div class="grid-auto-cards">
+        <article class="heritage-card">
+          <span class="eyebrow">Reaching the Temple</span>
+          <h3>Address &amp; Navigation</h3>
+          <p>
+            <strong>Full Address:</strong><br />
+            {TEMPLE_INFO.address.full}
+          </p>
+          <p class="small-muted">
+            Tap “Get Directions” to open exact turn-by-turn navigation in Google Maps on your phone.
+          </p>
+        </article>
+
+        <article class="heritage-card">
+          <span class="eyebrow">Temple Enquiries</span>
+          <h3>Phone &amp; Approved Channels</h3>
+          <p>
+            <strong>Phone:</strong>{' '}
+            <a href={TEMPLE_INFO.contact.phoneHref}>{TEMPLE_INFO.contact.phoneDisplay}</a>
+          </p>
+          <p class="small-muted">
+            {TEMPLE_INFO.contact.phoneVerificationNote} Official WhatsApp, email, or social channels will be added only if explicitly approved by the temple administration.
+          </p>
+        </article>
+      </div>
+
+      <NoticeBanner
+        tone="info"
+        title="Visitor Guidance"
+        message="Please check the Darshan Timings page or contact the temple office before travelling on festival days, as schedules may vary during special occasions."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-wrap {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .small-muted {
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+    margin: 0;
+  }
+</style>

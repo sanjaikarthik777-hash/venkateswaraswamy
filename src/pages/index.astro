@@ -1,0 +1,715 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import NoticeBanner from '@/components/NoticeBanner.astro';
+import DirectionsCard from '@/components/DirectionsCard.astro';
+import TirunamamEmblem from '@/components/TirunamamEmblem.astro';
+import OrnamentalDivider from '@/components/OrnamentalDivider.astro';
+import { TEMPLE_INFO } from '@/data/temple';
+import { DARSHAN_CONFIG } from '@/data/timings';
+import { ANNOUNCEMENTS } from '@/data/announcements';
+import { FESTIVALS_CONFIG } from '@/data/festivals';
+import { GALLERY_ITEMS, ILLUSTRATION_ASSETS } from '@/data/gallery';
+import heroTemple from '@/assets/illustrations/hero-temple.png';
+import deitySanctum from '@/assets/illustrations/deity-sanctum.png';
+
+const quickLinks = [
+  {
+    href: '/timings/',
+    title: 'Darshan Timings',
+    desc: 'Morning & evening schedule updates',
+    icon: 'clock'
+  },
+  {
+    href: '/pooja-seva/',
+    title: 'Pooja & Seva',
+    desc: 'Archana, prasadam & facilities',
+    icon: 'lamp'
+  },
+  {
+    href: '/festivals/',
+    title: 'Festivals',
+    desc: 'Utsavams & announcements',
+    icon: 'star'
+  },
+  {
+    href: '/gallery/',
+    title: 'Gallery',
+    desc: 'Sanctum, architecture & alankaram',
+    icon: 'gallery'
+  },
+  {
+    href: '/contact/',
+    title: 'Contact & Location',
+    desc: 'Peelamedu address & directions',
+    icon: 'pin'
+  }
+];
+
+const galleryPreview = GALLERY_ITEMS.slice(0, 3);
+---
+
+<BaseLayout
+  title={`${TEMPLE_INFO.name} (${TEMPLE_INFO.alternateName}) | Peelamedu, Coimbatore`}
+  description={`Official devotional portal for ${TEMPLE_INFO.name} (${TEMPLE_INFO.alternateName}) in Peelamedu, Coimbatore. View temple information, darshan updates, poojas, festivals, and directions.`}
+  schemaType="HinduTemple"
+>
+  <!-- 1. Hero Section -->
+  <section class="hero" aria-label="Temple welcome">
+    <div class="hero-media" aria-hidden="true">
+      <Picture
+        src={heroTemple}
+        alt="Illustrative devotional visual of a South Indian Vaishnava temple entrance at dawn"
+        formats={['avif', 'webp']}
+        widths={[640, 1280]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img"
+      />
+      <div class="hero-scrim"></div>
+    </div>
+
+    <div class="container hero-content">
+      <div class="hero-card">
+        <div class="hero-greeting-row">
+          <TirunamamEmblem size={32} variant="light" />
+          <p class="hero-greeting">{TEMPLE_INFO.devotionalGreeting}</p>
+        </div>
+
+        <h1>{TEMPLE_INFO.name}</h1>
+        <p class="hero-sub">
+          {TEMPLE_INFO.alternateName} · {TEMPLE_INFO.address.locality}, {TEMPLE_INFO.address.city}
+        </p>
+        <p class="hero-lead">
+          A peaceful South Indian Vaishnava shrine welcoming devotees to the sacred presence of Lord Sri Venkateswara Swamy.
+        </p>
+
+        <div class="hero-actions">
+          <a href="/about/" class="btn btn-gold">Explore Temple</a>
+          <a
+            href={TEMPLE_INFO.googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline-ivory"
+          >
+            Get Directions
+          </a>
+        </div>
+
+        <p class="hero-visual-note">
+          Illustrative devotional artwork shown · Official temple photography awaiting administration approval
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Quick Links -->
+  <section class="quick-links-band" aria-label="Quick temple navigation">
+    <div class="container">
+      <div class="quick-grid">
+        {quickLinks.map((item) => (
+          <a href={item.href} class="quick-card">
+            <span class="quick-icon" aria-hidden="true">
+              {item.icon === 'clock' && (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
+                  <path d="M12 7V12L15.5 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+              )}
+              {item.icon === 'lamp' && (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3C13.8 6.4 16 8.6 16 11.5C16 13.8 14.2 15.5 12 15.5C9.8 15.5 8 13.8 8 11.5C8 8.6 10.2 6.4 12 3Z" stroke="currentColor" stroke-width="1.8" />
+                  <path d="M5 18.5H19L17 21H7L5 18.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                </svg>
+              )}
+              {item.icon === 'star' && (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3L14.5 9.2L21 9.8L16 14.2L17.5 20.6L12 17.2L6.5 20.6L8 14.2L3 9.8L9.5 9.2L12 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+                </svg>
+              )}
+              {item.icon === 'gallery' && (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8" />
+                  <path d="M7 15L10.5 11.5L13.5 14.5L16 12L19 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              )}
+              {item.icon === 'pin' && (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 21C15.5 17.4 18 14 18 10.2C18 6.8 15.3 4 12 4C8.7 4 6 6.8 6 10.2C6 14 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.8" />
+                </svg>
+              )}
+            </span>
+            <span class="quick-text">
+              <strong>{item.title}</strong>
+              <span>{item.desc}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Temple Introduction -->
+  <section class="section">
+    <div class="container intro-layout">
+      <div class="intro-media">
+        <div class="media-box">
+          <Picture
+            src={deitySanctum}
+            alt="Illustrative classical South Indian devotional painting of Lord Venkateswara Swamy"
+            formats={['avif', 'webp']}
+            widths={[400, 680]}
+            sizes="(max-width: 767px) 100vw, 420px"
+            loading="lazy"
+            class="intro-img"
+          />
+          <span class="illustrative-badge">Illustrative Devotional Art</span>
+        </div>
+      </div>
+
+      <div class="intro-copy">
+        <span class="eyebrow">Sacred Heritage</span>
+        <h2>Welcome to {TEMPLE_INFO.name}</h2>
+        <OrnamentalDivider compact />
+        <p>
+          Located in Peelamedu, Coimbatore ({TEMPLE_INFO.address.area}),{' '}
+          <strong>{TEMPLE_INFO.name}</strong> — also associated with the name{' '}
+          <strong>{TEMPLE_INFO.alternateName}</strong> — offers devotees a serene place of prayer and worship dedicated to Lord Sri Venkateswara Swamy in the South Indian Vaishnava tradition.
+        </p>
+        <p>
+          This portal provides verified location guidance alongside clearly marked schedules and service sections prepared for confirmation by the temple administration.
+        </p>
+        <div class="intro-actions">
+          <a href="/about/" class="btn btn-primary">Read About the Temple</a>
+          <a href="/pooja-seva/" class="btn btn-outline-maroon">Pooja &amp; Seva Details</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Darshan Information -->
+  <section class="section section-sand">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Daily Worship"
+        title="Darshan Timings"
+        subtitle="Clear morning and evening darshan slots prepared for temple administration confirmation."
+      />
+
+      <div class="timings-grid">
+        {DARSHAN_CONFIG.sessions.map((slot) => (
+          <article class="heritage-card heritage-card-gold timing-card">
+            <div class="timing-head">
+              <h3>{slot.session}</h3>
+              <span class:list={['status-pill', slot.confirmed ? 'status-pill-verified' : 'status-pill-pending']}>
+                {slot.confirmed ? 'Confirmed' : 'Pending Confirmation'}
+              </span>
+            </div>
+            <p class="timing-value">{slot.timing}</p>
+            <p class="timing-notes">{slot.notes}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="notice-stack">
+        <NoticeBanner
+          tone="festival"
+          title="Festival & Special Day Schedule Notice"
+          message={`${DARSHAN_CONFIG.festivalNotice} ${DARSHAN_CONFIG.verificationNotice}`}
+        />
+      </div>
+
+      <div class="center-cta">
+        <a href="/timings/" class="btn btn-primary">View Full Darshan Schedule</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Festivals & Announcements -->
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Temple Calendar & Notices"
+        title="Festivals &amp; Announcements"
+        subtitle="Dates are published only after official confirmation by the temple administration."
+      />
+
+      <div class="grid-auto-cards grid-auto-cards-3 announcement-grid">
+        {ANNOUNCEMENTS.map((item) => (
+          <article class="heritage-card announcement-card">
+            <div class="card-meta">
+              <span class="status-pill status-pill-verified">{item.badge}</span>
+              <span class="meta-date">{item.dateLabel}</span>
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.message}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="upcoming-events">
+        <h3 class="sub-section-title">Highlighted Temple Observances (Awaiting Confirmed Dates)</h3>
+        <div class="grid-auto-cards grid-auto-cards-3">
+          {FESTIVALS_CONFIG.events.map((ev) => (
+            <article class="heritage-card event-preview-card">
+              <div class="event-thumb">
+                <Picture
+                  src={ILLUSTRATION_ASSETS[ev.imageKey]}
+                  alt={`Illustrative devotional artwork for ${ev.name}`}
+                  formats={['avif', 'webp']}
+                  widths={[360, 640]}
+                  sizes="(max-width: 639px) 100vw, 33vw"
+                  loading="lazy"
+                />
+                <span class="illustrative-badge">Illustrative Art</span>
+              </div>
+              <div class="event-body">
+                <span class="status-pill status-pill-pending">{ev.announcementNote}</span>
+                <h4>{ev.name}</h4>
+                <p class="event-date">{ev.dateText}</p>
+                <p class="event-desc">{ev.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="center-cta">
+        <a href="/festivals/" class="btn btn-outline-maroon">Explore Festivals &amp; Notices</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Photo Gallery Preview -->
+  <section class="section section-maroon">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Visual Archive"
+        title="Temple Gallery Preview"
+        subtitle="Illustrative devotional artwork is shown below and clearly labelled until official temple photographs are provided."
+        tone="light"
+      />
+
+      <div class="grid-auto-cards grid-auto-cards-3">
+        {galleryPreview.map((item) => (
+          <figure class="preview-figure">
+            <div class="preview-frame">
+              <Picture
+                src={item.image}
+                alt={item.alt}
+                formats={['avif', 'webp']}
+                widths={[380, 680]}
+                sizes="(max-width: 639px) 100vw, 33vw"
+                loading="lazy"
+              />
+              {item.isIllustrative && (
+                <span class="illustrative-badge">{item.illustrativeLabel}</span>
+              )}
+            </div>
+            <figcaption>
+              <strong>{item.title}</strong>
+              <span>{item.category}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <div class="center-cta">
+        <a href="/gallery/" class="btn btn-gold">Open Full Gallery</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Location & Contact Preview -->
+  <section class="section">
+    <div class="container">
+      <DirectionsCard />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: clamp(460px, 72svh, 640px);
+    display: flex;
+    align-items: center;
+    background-color: var(--color-maroon-dark);
+    color: var(--color-ivory-warm);
+    overflow: hidden;
+    border-bottom: 3px solid var(--color-gold-antique);
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-media :global(picture),
+  .hero-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(35, 6, 10, 0.72) 0%,
+      rgba(45, 7, 13, 0.78) 55%,
+      rgba(35, 6, 10, 0.92) 100%
+    );
+  }
+
+  @media (min-width: 768px) {
+    .hero-scrim {
+      background: linear-gradient(
+        95deg,
+        rgba(33, 5, 10, 0.9) 0%,
+        rgba(45, 7, 13, 0.74) 55%,
+        rgba(45, 7, 13, 0.38) 100%
+      );
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-block: var(--space-10);
+  }
+
+  .hero-card {
+    max-width: 620px;
+  }
+
+  .hero-greeting-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .hero-greeting {
+    margin: 0;
+    font-family: var(--font-serif-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-gold-bright);
+  }
+
+  .hero h1 {
+    font-size: var(--text-hero);
+    color: var(--color-ivory-warm);
+    margin-bottom: var(--space-2);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+  }
+
+  .hero-sub {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-gold-soft);
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-3);
+  }
+
+  .hero-lead {
+    font-size: var(--text-lg);
+    color: rgba(250, 245, 235, 0.93);
+    margin-bottom: var(--space-6);
+    max-width: 52ch;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-visual-note {
+    margin: 0;
+    font-size: 0.76rem;
+    color: rgba(239, 224, 182, 0.85);
+  }
+
+  /* Quick Links */
+  .quick-links-band {
+    background-color: var(--color-ivory-card);
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding-block: var(--space-6);
+  }
+
+  .quick-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 560px) {
+    .quick-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 960px) {
+    .quick-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  .quick-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0.85rem 1rem;
+    min-height: 60px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-subtle);
+    background-color: var(--color-ivory-warm);
+    text-decoration: none;
+    color: var(--color-brown-dark);
+    transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .quick-card:hover {
+    border-color: var(--color-gold-antique);
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-1px);
+  }
+
+  .quick-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background-color: var(--color-maroon-deep);
+    color: var(--color-gold-soft);
+  }
+
+  .quick-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .quick-text strong {
+    font-family: var(--font-display);
+    font-size: 1.08rem;
+    color: var(--color-maroon-deep);
+    line-height: 1.2;
+  }
+
+  .quick-text span {
+    font-size: 0.78rem;
+    color: var(--color-brown-muted);
+  }
+
+  /* Introduction */
+  .intro-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  @media (min-width: 820px) {
+    .intro-layout {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: var(--space-10);
+    }
+  }
+
+  .media-box {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid var(--color-gold-antique);
+    box-shadow: var(--shadow-card);
+    max-width: 440px;
+    margin-inline: auto;
+  }
+
+  .intro-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  /* Timings */
+  .timings-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .timings-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+  }
+
+  .timing-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .timing-head h3 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .timing-value {
+    font-weight: 700;
+    color: var(--color-temple-red);
+    font-size: var(--text-base);
+    margin-bottom: var(--space-2);
+  }
+
+  .timing-notes {
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+    margin: 0;
+  }
+
+  .notice-stack {
+    margin-bottom: var(--space-6);
+  }
+
+  /* Announcements & Events */
+  .announcement-grid {
+    margin-bottom: var(--space-10);
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .meta-date {
+    font-size: var(--text-xs);
+    color: var(--color-brown-muted);
+    font-weight: 600;
+  }
+
+  .announcement-card h3 {
+    font-size: 1.22rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .announcement-card p {
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+    margin: 0;
+  }
+
+  .sub-section-title {
+    margin-bottom: var(--space-5);
+    text-align: center;
+    font-size: 1.45rem;
+  }
+
+  .event-preview-card {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .event-thumb {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background-color: var(--color-maroon-dark);
+  }
+
+  .event-thumb :global(picture),
+  .event-thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .event-body {
+    padding: var(--space-5);
+  }
+
+  .event-body h4 {
+    font-size: 1.25rem;
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-1);
+  }
+
+  .event-date {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-temple-red);
+    margin-bottom: var(--space-2);
+  }
+
+  .event-desc {
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+    margin: 0;
+  }
+
+  /* Gallery Preview */
+  .preview-figure {
+    margin: 0;
+    background-color: rgba(45, 7, 13, 0.72);
+    border: 1px solid rgba(197, 155, 67, 0.45);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .preview-frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+  }
+
+  .preview-frame :global(picture),
+  .preview-frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .preview-figure figcaption {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .preview-figure strong {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--color-gold-soft);
+  }
+
+  .preview-figure span {
+    font-size: var(--text-xs);
+    color: rgba(250, 245, 235, 0.78);
+  }
+
+  .center-cta {
+    margin-top: var(--space-8);
+    text-align: center;
+  }
+</style>

@@ -1,0 +1,65 @@
+:root {
+  /* Divine Heritage Colour Palette */
+  --color-maroon-deep: #4A0E17;
+  --color-maroon-rich: #631622;
+  --color-maroon-dark: #2D070D;
+  --color-gold-antique: #C59B43;
+  --color-gold-bright: #D9B45B;
+  --color-gold-soft: #EFE0B6;
+  --color-gold-muted: #8C6A22;
+  --color-ivory-warm: #FAF5EB;
+  --color-ivory-card: #FFFDF8;
+  --color-ivory-sand: #F1E6D2;
+  --color-temple-red: #8C1D18;
+  --color-temple-red-soft: #F9EAE8;
+  --color-brown-dark: #2C1A12;
+  --color-brown-muted: #5C4338;
+  --color-border-subtle: rgba(140, 106, 34, 0.26);
+  --color-border-gold: rgba(197, 155, 67, 0.55);
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', 'Cinzel', Georgia, 'Times New Roman', serif;
+  --font-serif-accent: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Fluid Type Scale (Mobile-first) */
+  --text-xs: 0.78rem;
+  --text-sm: 0.9rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 2vw, 1.45rem);
+  --text-2xl: clamp(1.6rem, 3.2vw, 2.15rem);
+  --text-3xl: clamp(2rem, 4.5vw, 3rem);
+  --text-hero: clamp(2.15rem, 6vw, 3.6rem);
+
+  /* Spacing & Layout */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  --container-max: 1120px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 9999px;
+
+  /* Restrained Shadows */
+  --shadow-soft: 0 4px 20px rgba(44, 26, 18, 0.06);
+  --shadow-card: 0 8px 28px rgba(44, 26, 18, 0.09);
+  --shadow-header: 0 2px 16px rgba(45, 7, 13, 0.18);
+
+  /* Transitions */
+  --transition-fast: 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-base: 280ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Safe Area & Bars */
+  --header-height: 66px;
+  --bottom-bar-height: 68px;
+}

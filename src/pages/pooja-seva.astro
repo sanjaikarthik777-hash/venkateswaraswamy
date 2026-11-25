@@ -1,0 +1,172 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NoticeBanner from '@/components/NoticeBanner.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { TEMPLE_INFO } from '@/data/temple';
+import { SEVA_CONFIG } from '@/data/sevas';
+import poojaSamagri from '@/assets/illustrations/pooja-samagri.png';
+---
+
+<BaseLayout
+  title="Pooja & Seva"
+  description={`Information on poojas, sevas, prasadam, tonsuring, and thulabaram enquiries at ${TEMPLE_INFO.name}, Peelamedu, Coimbatore.`}
+>
+  <section class="page-banner">
+    <div class="container">
+      <span class="eyebrow" style="color: var(--color-gold-bright)">Worship &amp; Offerings</span>
+      <h1>Pooja &amp; Seva</h1>
+      <p>
+        Official service details and devotee facilities published upon temple administration confirmation.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container seva-wrap">
+      <NoticeBanner
+        tone="verification"
+        title="No Online Booking or Payment Active"
+        message={SEVA_CONFIG.verificationNotice}
+      />
+
+      <div class="seva-intro-grid">
+        <div class="seva-intro-copy">
+          <SectionHeading
+            eyebrow="Devotee Services"
+            title="Poojas, Prasadam &amp; Temple Facilities"
+            subtitle="Only services, timings, and applicable fees confirmed by the temple office are displayed here."
+            align="left"
+          />
+          <p>
+            Devotees wishing to enquire about daily archanas, special sevas, offerings, tonsuring, or thulabaram arrangements are requested to contact the temple office directly or verify in person at the temple counter.
+          </p>
+        </div>
+
+        <div class="seva-visual">
+          <Picture
+            src={poojaSamagri}
+            alt="Illustrative devotional artwork of traditional South Indian temple pooja offerings on a brass plate"
+            formats={['avif', 'webp']}
+            widths={[400, 720]}
+            sizes="(max-width: 767px) 100vw, 400px"
+            loading="eager"
+          />
+          <span class="illustrative-badge">Illustrative Artwork — Awaiting Official Photo</span>
+        </div>
+      </div>
+
+      <div class="grid-auto-cards">
+        {SEVA_CONFIG.items.map((item) => (
+          <article class="heritage-card heritage-card-gold seva-card">
+            <div class="seva-head">
+              <span class="seva-category">{item.category}</span>
+              <span class:list={['status-pill', item.confirmed ? 'status-pill-verified' : 'status-pill-pending']}>
+                {item.statusLabel}
+              </span>
+            </div>
+            <h3>{item.title}</h3>
+            <p class="seva-summary">{item.summary}</p>
+            <dl class="seva-meta">
+              <div>
+                <dt>Fee / Contribution</dt>
+                <dd>{item.feeInfo}</dd>
+              </div>
+              <div>
+                <dt>Enquiry &amp; Procedure</dt>
+                <dd>{item.bookingProcedure}</dd>
+              </div>
+            </dl>
+          </article>
+        ))}
+      </div>
+
+      <div class="seva-footer-cta">
+        <a href="/contact/" class="btn btn-primary">Contact Temple Office</a>
+        <a href="/timings/" class="btn btn-outline-maroon">View Darshan Timings</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .seva-wrap {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .seva-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  @media (min-width: 820px) {
+    .seva-intro-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--space-8);
+    }
+  }
+
+  .seva-intro-grid :global(.section-heading) {
+    margin-bottom: var(--space-4);
+  }
+
+  .seva-visual {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid var(--color-gold-antique);
+    box-shadow: var(--shadow-card);
+  }
+
+  .seva-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .seva-category {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-gold-muted);
+  }
+
+  .seva-summary {
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+  }
+
+  .seva-meta {
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border-subtle);
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .seva-meta dt {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-maroon-deep);
+    font-weight: 700;
+  }
+
+  .seva-meta dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-brown-dark);
+  }
+
+  .seva-footer-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

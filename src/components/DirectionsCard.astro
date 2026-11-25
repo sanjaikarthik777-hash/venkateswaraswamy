@@ -1,0 +1,163 @@
+---
+import { TEMPLE_INFO } from '@/data/temple';
+---
+
+<div class="directions-card heritage-card heritage-card-gold">
+  <div class="directions-grid">
+    <div class="directions-info">
+      <span class="eyebrow">Location &amp; Contact</span>
+      <h3>{TEMPLE_INFO.name}</h3>
+      <p class="aka-line">Also known as {TEMPLE_INFO.alternateName}</p>
+
+      <dl class="details-list">
+        <div>
+          <dt>Temple Address</dt>
+          <dd>{TEMPLE_INFO.address.full}</dd>
+        </div>
+        <div>
+          <dt>Phone Enquiry</dt>
+          <dd>
+            <a href={TEMPLE_INFO.contact.phoneHref} class="phone-link">
+              {TEMPLE_INFO.contact.phoneDisplay}
+            </a>
+            {!TEMPLE_INFO.contact.phoneVerified && (
+              <span class="status-pill status-pill-pending inline-badge">
+                Verify with temple administration
+              </span>
+            )}
+          </dd>
+        </div>
+      </dl>
+
+      <div class="action-row">
+        <a
+          href={TEMPLE_INFO.googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+        >
+          Get Directions (Google Maps)
+        </a>
+        <a href={TEMPLE_INFO.contact.phoneHref} class="btn btn-outline-maroon">
+          Call Temple Office
+        </a>
+      </div>
+    </div>
+
+    <div class="directions-map-box">
+      <div class="map-placeholder-frame">
+        <span class="map-pin" aria-hidden="true">⌖</span>
+        <p class="map-place-title">{TEMPLE_INFO.name}</p>
+        <p class="map-place-sub">
+          {TEMPLE_INFO.address.plusCode} · {TEMPLE_INFO.address.locality},{' '}
+          {TEMPLE_INFO.address.city}
+        </p>
+        <a
+          href={TEMPLE_INFO.googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-gold"
+        >
+          Open Map Route
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .directions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .directions-grid {
+      grid-template-columns: 1.25fr 1fr;
+      gap: var(--space-8);
+    }
+  }
+
+  .aka-line {
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .details-list {
+    margin: 0 0 var(--space-5);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .details-list dt {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-gold-muted);
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+
+  .details-list dd {
+    margin: 0;
+    color: var(--color-brown-dark);
+    font-size: var(--text-base);
+  }
+
+  .phone-link {
+    font-weight: 700;
+    color: var(--color-maroon-deep);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-gold-antique);
+  }
+
+  .inline-badge {
+    margin-left: 0.45rem;
+    vertical-align: middle;
+  }
+
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .map-placeholder-frame {
+    background: linear-gradient(155deg, var(--color-maroon-dark) 0%, var(--color-maroon-deep) 100%);
+    color: var(--color-ivory-warm);
+    border: 1.5px solid var(--color-gold-antique);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    text-align: center;
+  }
+
+  .map-pin {
+    display: inline-grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background-color: rgba(197, 155, 67, 0.2);
+    border: 1px solid var(--color-gold-antique);
+    color: var(--color-gold-bright);
+    font-size: 1.35rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .map-place-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-gold-soft);
+    margin-bottom: 0.25rem;
+  }
+
+  .map-place-sub {
+    font-size: var(--text-sm);
+    color: rgba(250, 245, 235, 0.85);
+    margin-bottom: var(--space-4);
+  }
+</style>

@@ -1,0 +1,193 @@
+---
+import { TEMPLE_INFO } from '@/data/temple';
+import TirunamamEmblem from './TirunamamEmblem.astro';
+import OrnamentalDivider from './OrnamentalDivider.astro';
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-row">
+          <TirunamamEmblem size={42} variant="light" />
+          <div>
+            <h2>{TEMPLE_INFO.name}</h2>
+            <p class="alt-name">{TEMPLE_INFO.alternateName}</p>
+          </div>
+        </div>
+        <p class="footer-desc">
+          {TEMPLE_INFO.shortTagline}
+        </p>
+        <p class="footer-address">
+          <strong>Address:</strong><br />
+          {TEMPLE_INFO.address.full}
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h3>Temple Pages</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about/">About the Temple</a></li>
+          <li><a href="/timings/">Darshan Timings</a></li>
+          <li><a href="/pooja-seva/">Pooja &amp; Seva</a></li>
+          <li><a href="/festivals/">Festivals &amp; Events</a></li>
+          <li><a href="/gallery/">Photo Gallery</a></li>
+          <li><a href="/contact/">Contact &amp; Location</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h3>Visit &amp; Enquiries</h3>
+        <p>
+          <strong>Phone:</strong>{' '}
+          <a href={TEMPLE_INFO.contact.phoneHref}>{TEMPLE_INFO.contact.phoneDisplay}</a>
+          {!TEMPLE_INFO.contact.phoneVerified && (
+            <span class="verify-note">
+              ({TEMPLE_INFO.contact.phoneVerificationNote})
+            </span>
+          )}
+        </p>
+        <p>
+          <a
+            href={TEMPLE_INFO.googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-gold footer-map-btn"
+          >
+            Open in Google Maps
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <OrnamentalDivider tone="ivory" compact />
+
+    <div class="footer-closing">
+      <p class="mantra">{TEMPLE_INFO.devotionalGreeting}</p>
+      <p class="blessing">
+        May Lord Sri Venkateswara Swamy bless devotees with peace, devotion, and well-being.
+      </p>
+      <p class="copyright">
+        © {new Date().getFullYear()} {TEMPLE_INFO.name}, Peelamedu, Coimbatore.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--color-maroon-dark);
+    color: var(--color-ivory-warm);
+    border-top: 3px solid var(--color-gold-antique);
+    padding-block: var(--space-12) var(--space-8);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1.4fr 1fr 1.1fr;
+      gap: var(--space-10);
+    }
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .site-footer h2 {
+    color: var(--color-gold-soft);
+    font-size: 1.4rem;
+    margin: 0;
+  }
+
+  .alt-name {
+    margin: 0;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-gold-antique);
+  }
+
+  .site-footer h3 {
+    color: var(--color-gold-soft);
+    font-size: 1.15rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .footer-desc,
+  .footer-address,
+  .footer-contact p {
+    font-size: var(--text-sm);
+    color: rgba(250, 245, 235, 0.86);
+  }
+
+  .footer-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .footer-links a,
+  .footer-contact a:not(.btn) {
+    color: var(--color-ivory-warm);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    border-bottom: 1px solid rgba(197, 155, 67, 0.25);
+    padding-block: 0.1rem;
+  }
+
+  .footer-links a:hover,
+  .footer-contact a:not(.btn):hover {
+    color: var(--color-gold-bright);
+    border-bottom-color: var(--color-gold-bright);
+  }
+
+  .verify-note {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.78rem;
+    color: var(--color-gold-soft);
+    opacity: 0.85;
+  }
+
+  .footer-map-btn {
+    margin-top: var(--space-2);
+  }
+
+  .footer-closing {
+    text-align: center;
+    padding-top: var(--space-4);
+  }
+
+  .mantra {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-gold-bright);
+    margin-bottom: var(--space-1);
+  }
+
+  .blessing {
+    font-size: var(--text-sm);
+    color: rgba(250, 245, 235, 0.85);
+    margin-bottom: var(--space-3);
+  }
+
+  .copyright {
+    font-size: var(--text-xs);
+    color: rgba(250, 245, 235, 0.65);
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+interface Props {
+  title: string;
+  message: string;
+  tone?: 'verification' | 'festival' | 'info';
+}
+
+const { title, message, tone = 'verification' } = Astro.props;
+---
+
+<aside class:list={['notice-banner', `notice-${tone}`]} role="note">
+  <div class="notice-icon" aria-hidden="true">
+    {tone === 'festival' ? '✦' : 'ⓘ'}
+  </div>
+  <div class="notice-body">
+    <p class="notice-title">{title}</p>
+    <p class="notice-text">{message}</p>
+  </div>
+</aside>
+
+<style>
+  .notice-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-gold);
+    background-color: var(--color-ivory-card);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .notice-verification {
+    border-left: 4px solid var(--color-temple-red);
+    background-color: #fdf6f2;
+  }
+
+  .notice-festival {
+    border-left: 4px solid var(--color-gold-antique);
+    background-color: #fbf7ec;
+  }
+
+  .notice-info {
+    border-left: 4px solid var(--color-maroon-deep);
+  }
+
+  .notice-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background-color: rgba(140, 29, 24, 0.1);
+    color: var(--color-temple-red);
+    margin-top: 2px;
+  }
+
+  .notice-festival .notice-icon {
+    background-color: rgba(197, 155, 67, 0.18);
+    color: var(--color-gold-muted);
+  }
+
+  .notice-title {
+    margin: 0 0 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-maroon-deep);
+  }
+
+  .notice-text {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+    line-height: 1.55;
+  }
+</style>

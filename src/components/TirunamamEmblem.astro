@@ -1,0 +1,45 @@
+---
+interface Props {
+  size?: number;
+  variant?: 'light' | 'dark';
+  class?: string;
+}
+
+const { size = 36, variant = 'light', class: className = '' } = Astro.props;
+const outerStroke = variant === 'light' ? '#FAF5EB' : '#4A0E17';
+const goldColor = variant === 'light' ? '#D9B45B' : '#C59B43';
+const redColor = variant === 'light' ? '#C93A32' : '#8C1D18';
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  fill="none"
+  aria-hidden="true"
+  class={className}
+>
+  <circle cx="32" cy="32" r="29" stroke={goldColor} stroke-width="1.6" stroke-opacity="0.85" />
+  <circle cx="32" cy="32" r="25" stroke={goldColor} stroke-width="0.9" stroke-opacity="0.45" />
+  <!-- Traditional Vaishnava Urdhva Pundra (Tirunamam) -->
+  <path
+    d="M21 18C21 33 25 41 32 43.5C39 41 43 33 43 18"
+    stroke={outerStroke}
+    stroke-width="3.6"
+    stroke-linecap="round"
+  />
+  <path
+    d="M32 17V39"
+    stroke={redColor}
+    stroke-width="3.2"
+    stroke-linecap="round"
+  />
+  <!-- Lotus petal base -->
+  <path
+    d="M20 48.5C24.5 45.8 39.5 45.8 44 48.5"
+    stroke={goldColor}
+    stroke-width="1.8"
+    stroke-linecap="round"
+  />
+  <circle cx="32" cy="51.5" r="1.6" fill={goldColor} />
+</svg>

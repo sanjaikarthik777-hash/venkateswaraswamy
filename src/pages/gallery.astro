@@ -1,0 +1,41 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NoticeBanner from '@/components/NoticeBanner.astro';
+import GalleryGrid from '@/components/GalleryGrid.astro';
+import { TEMPLE_INFO } from '@/data/temple';
+import { GALLERY_ITEMS } from '@/data/gallery';
+---
+
+<BaseLayout
+  title="Photo Gallery"
+  description={`Gallery for ${TEMPLE_INFO.name}, Peelamedu, Coimbatore — architecture, sanctum artwork, alankaram, and festival celebrations.`}
+>
+  <section class="page-banner">
+    <div class="container">
+      <span class="eyebrow" style="color: var(--color-gold-bright)">Visual Archive</span>
+      <h1>Temple Gallery</h1>
+      <p>
+        Explore exterior architecture, main deity visuals, floral alankaram, festivals, and temple activities.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container gallery-page-wrap">
+      <NoticeBanner
+        tone="verification"
+        title="Illustrative Artwork Placeholder Notice"
+        message="All images currently displayed are clearly labelled as illustrative South Indian devotional artwork. Unrelated temple photos are never used; authentic high-resolution photographs of Sri Venkateswara Swamy Temple, Peelamedu will replace these visuals once provided by temple management."
+      />
+
+      <GalleryGrid items={GALLERY_ITEMS} showFilters={true} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .gallery-page-wrap {
+    display: grid;
+    gap: var(--space-8);
+  }
+</style>

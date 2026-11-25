@@ -1,0 +1,313 @@
+---
+import { Picture } from 'astro:assets';
+import { GALLERY_CATEGORIES, type GalleryItem } from '@/data/gallery';
+
+interface Props {
+  items: GalleryItem[];
+  showFilters?: boolean;
+}
+
+const { items, showFilters = true } = Astro.props;
+---
+
+<div class="gallery-wrapper" data-gallery-root>
+  {showFilters && (
+    <div class="filter-bar" role="tablist" aria-label="Filter gallery by category">
+      {GALLERY_CATEGORIES.map((category, idx) => (
+        <button
+          type="button"
+          class:list={['filter-chip', { active: idx === 0 }]}
+          role="tab"
+          aria-selected={idx === 0 ? 'true' : 'false'}
+          data-filter={category}
+        >
+          {category}
+        </button>
+      ))}
+    </div>
+  )}
+
+  <div class="gallery-grid">
+    {items.map((item) => (
+      <figure class="gallery-card" data-category={item.category}>
+        <button
+          type="button"
+          class="gallery-trigger"
+          data-lightbox-open
+          data-title={item.title}
+          data-caption={item.caption}
+          data-badge={item.isIllustrative ? item.illustrativeLabel : ''}
+          aria-label={`View ${item.title}`}
+        >
+          <div class="media-frame">
+            <Picture
+              src={item.image}
+              alt={item.alt}
+              formats={['avif', 'webp']}
+              widths={[400, 760]}
+              sizes="(max-width: 639px) 100vw, (max-width: 959px) 50vw, 33vw"
+              loading="lazy"
+              decoding="async"
+              class="gallery-img"
+            />
+            {item.isIllustrative && (
+              <span class="illustrative-badge">{item.illustrativeLabel}</span>
+            )}
+          </div>
+        </button>
+        <figcaption class="gallery-caption">
+          <span class="caption-cat">{item.category}</span>
+          <h3>{item.title}</h3>
+          <p>{item.caption}</p>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+
+  <dialog class="gallery-lightbox" aria-label="Enlarged temple visual">
+    <div class="lightbox-inner">
+      <button type="button" class="lightbox-close" aria-label="Close preview">✕ Close</button>
+      <div class="lightbox-media"></div>
+      <div class="lightbox-meta">
+        <span class="status-pill status-pill-verified" data-lb-badge hidden></span>
+        <h3 data-lb-title></h3>
+        <p data-lb-caption></p>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  const root = document.querySelector('[data-gallery-root]');
+  if (root) {
+    const filterButtons = root.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const cards = root.querySelectorAll<HTMLElement>('.gallery-card');
+    const dialog = root.querySelector<HTMLDialogElement>('.gallery-lightbox');
+    const lbMedia = root.querySelector<HTMLElement>('.lightbox-media');
+    const lbTitle = root.querySelector<HTMLElement>('[data-lb-title]');
+    const lbCaption = root.querySelector<HTMLElement>('[data-lb-caption]');
+    const lbBadge = root.querySelector<HTMLElement>('[data-lb-badge]');
+    const lbClose = root.querySelector<HTMLButtonElement>('.lightbox-close');
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selected = btn.dataset.filter || 'All';
+        filterButtons.forEach((b) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        cards.forEach((card) => {
+          const match = selected === 'All' || card.dataset.category === selected;
+          card.hidden = !match;
+        });
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        if (!dialog || !lbMedia || !lbTitle || !lbCaption || !lbBadge) return;
+        const img = trigger.querySelector('img');
+        if (img) {
+          const clone = document.createElement('img');
+          clone.src = img.currentSrc || img.src;
+          clone.alt = img.alt;
+          lbMedia.replaceChildren(clone);
+        }
+        lbTitle.textContent = trigger.dataset.title || '';
+        lbCaption.textContent = trigger.dataset.caption || '';
+        const badgeText = trigger.dataset.badge || '';
+        if (badgeText) {
+          lbBadge.textContent = badgeText;
+          lbBadge.hidden = false;
+        } else {
+          lbBadge.hidden = true;
+        }
+        dialog.showModal();
+      });
+    });
+
+    lbClose?.addEventListener('click', () => dialog?.close());
+    dialog?.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  }
+</script>
+
+<style>
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: var(--space-6);
+  }
+
+  .filter-chip {
+    min-height: 44px;
+    padding: 0.45rem 0.95rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border-gold);
+    background-color: var(--color-ivory-card);
+    color: var(--color-brown-dark);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .filter-chip:hover {
+    background-color: var(--color-ivory-sand);
+  }
+
+  .filter-chip.active {
+    background-color: var(--color-maroon-deep);
+    color: var(--color-ivory-warm);
+    border-color: var(--color-maroon-deep);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 640px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 960px) {
+    .gallery-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .gallery-card {
+    margin: 0;
+    background-color: var(--color-ivory-card);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-card[hidden] {
+    display: none;
+  }
+
+  .gallery-trigger {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+
+  .media-frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: var(--color-maroon-dark);
+  }
+
+  .media-frame :global(picture),
+  .media-frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+  }
+
+  .gallery-trigger:hover .media-frame :global(img) {
+    transform: scale(1.03);
+  }
+
+  .gallery-caption {
+    padding: var(--space-4);
+  }
+
+  .caption-cat {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-temple-red);
+    margin-bottom: 0.25rem;
+  }
+
+  .gallery-caption h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .gallery-caption p {
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+    margin: 0;
+  }
+
+  .gallery-lightbox {
+    max-width: min(92vw, 760px);
+    padding: 0;
+    border: 2px solid var(--color-gold-antique);
+    border-radius: var(--radius-md);
+    background-color: var(--color-ivory-card);
+    color: var(--color-brown-dark);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  .gallery-lightbox::backdrop {
+    background: rgba(25, 5, 8, 0.78);
+  }
+
+  .lightbox-inner {
+    padding: var(--space-4);
+  }
+
+  .lightbox-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.4rem 0.9rem;
+    margin-left: auto;
+    margin-bottom: var(--space-3);
+    background-color: var(--color-maroon-deep);
+    color: var(--color-ivory-warm);
+    border: 1px solid var(--color-gold-antique);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .lightbox-media :global(img) {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-maroon-dark);
+  }
+
+  .lightbox-meta {
+    margin-top: var(--space-4);
+  }
+
+  .lightbox-meta h3 {
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-1);
+  }
+
+  .lightbox-meta p {
+    font-size: var(--text-sm);
+    color: var(--color-brown-muted);
+    margin: 0;
+  }
+</style>

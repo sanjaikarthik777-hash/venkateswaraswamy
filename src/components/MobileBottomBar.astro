@@ -1,0 +1,117 @@
+---
+import { TEMPLE_INFO } from '@/data/temple';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<nav class="mobile-bottom-bar" aria-label="Quick temple actions">
+  <a
+    href="/timings/"
+    class:list={['bar-item', { active: currentPath.startsWith('/timings') }]}
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
+      <path d="M12 7V12L15.5 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </svg>
+    <span>Timings</span>
+  </a>
+
+  <a
+    href="/pooja-seva/"
+    class:list={['bar-item', { active: currentPath.startsWith('/pooja-seva') }]}
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 3C13.8 6.4 16 8.6 16 11.5C16 13.8 14.2 15.5 12 15.5C9.8 15.5 8 13.8 8 11.5C8 8.6 10.2 6.4 12 3Z"
+        stroke="currentColor"
+        stroke-width="1.8"
+      />
+      <path d="M5 18.5H19L17 21H7L5 18.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+    </svg>
+    <span>Pooja</span>
+  </a>
+
+  <a
+    href={TEMPLE_INFO.googleMapsUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="bar-item"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 21C15.5 17.4 18 14 18 10.2C18 6.8 15.3 4 12 4C8.7 4 6 6.8 6 10.2C6 14 8.5 17.4 12 21Z"
+        stroke="currentColor"
+        stroke-width="1.8"
+      />
+      <circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8" />
+    </svg>
+    <span>Directions</span>
+  </a>
+
+  <a href={TEMPLE_INFO.contact.phoneHref} class="bar-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M6.6 10.8C8.1 13.7 10.3 15.9 13.2 17.4L15.4 15.2C15.7 14.9 16.1 14.8 16.5 14.9C17.7 15.3 19 15.5 20.3 15.5C20.9 15.5 21.4 16 21.4 16.6V20.3C21.4 20.9 20.9 21.4 20.3 21.4C10.9 21.4 3.3 13.8 3.3 4.4C3.3 3.8 3.8 3.3 4.4 3.3H8.1C8.7 3.3 9.2 3.8 9.2 4.4C9.2 5.7 9.4 7 9.8 8.2C9.9 8.6 9.8 9 9.5 9.3L6.6 10.8Z"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linejoin="round"
+      />
+    </svg>
+    <span>Call</span>
+  </a>
+</nav>
+
+<style>
+  .mobile-bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 85;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    min-height: var(--bottom-bar-height);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background-color: var(--color-maroon-dark);
+    border-top: 2px solid var(--color-gold-antique);
+    box-shadow: 0 -4px 18px rgba(45, 7, 13, 0.25);
+  }
+
+  .bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.22rem;
+    min-height: 54px;
+    padding: 0.4rem 0.25rem;
+    color: var(--color-ivory-warm);
+    text-decoration: none;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .bar-item svg {
+    color: var(--color-gold-soft);
+  }
+
+  .bar-item.active {
+    color: var(--color-gold-bright);
+    background-color: rgba(197, 155, 67, 0.14);
+  }
+
+  .bar-item.active svg {
+    color: var(--color-gold-bright);
+  }
+
+  @media (min-width: 900px) {
+    .mobile-bottom-bar {
+      display: none;
+    }
+  }
+</style>

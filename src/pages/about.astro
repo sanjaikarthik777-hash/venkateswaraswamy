@@ -1,0 +1,144 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NoticeBanner from '@/components/NoticeBanner.astro';
+import OrnamentalDivider from '@/components/OrnamentalDivider.astro';
+import { TEMPLE_INFO } from '@/data/temple';
+import deitySanctum from '@/assets/illustrations/deity-sanctum.png';
+import gopuramExterior from '@/assets/illustrations/gopuram-exterior.png';
+---
+
+<BaseLayout
+  title="About the Temple"
+  description={`Learn about ${TEMPLE_INFO.name} (${TEMPLE_INFO.alternateName}) in Peelamedu, Coimbatore — presiding deity, temple traditions, and administration-verified overview.`}
+>
+  <section class="page-banner">
+    <div class="container">
+      <span class="eyebrow" style="color: var(--color-gold-bright)">Sri Vaishnava Tradition</span>
+      <h1>About {TEMPLE_INFO.name}</h1>
+      <p>
+        Also known as {TEMPLE_INFO.alternateName} · {TEMPLE_INFO.address.locality},{' '}
+        {TEMPLE_INFO.address.city}
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container about-grid">
+      <div class="about-copy">
+        <span class="eyebrow">Temple Introduction</span>
+        <h2>A Sanctuary of Devotion in Peelamedu</h2>
+        <OrnamentalDivider compact />
+        <p>
+          <strong>{TEMPLE_INFO.name}</strong> ({TEMPLE_INFO.alternateName}), situated at{' '}
+          {TEMPLE_INFO.address.full}, serves devotees in Coimbatore as a serene shrine dedicated to{' '}
+          <strong>Lord Sri Venkateswara Swamy</strong>.
+        </p>
+        <p>
+          Designed in alignment with South Indian Vaishnava devotional traditions, the temple welcomes families and pilgrims seeking quiet prayer, daily darshan, and traditional worship.
+        </p>
+
+        <h3>Presiding Deity</h3>
+        <p>
+          The presiding deity of the temple is <strong>Lord Sri Venkateswara Swamy</strong>, revered in the Vaishnava tradition as a compassionate form of Sri Maha Vishnu. Detailed descriptions of utsava murtis, shrine sub-deities (sannidhis), and daily alankaram practices will be published once formally provided by the temple administration.
+        </p>
+      </div>
+
+      <aside class="about-media">
+        <div class="media-card">
+          <Picture
+            src={deitySanctum}
+            alt="Illustrative classical devotional art of Lord Venkateswara Swamy"
+            formats={['avif', 'webp']}
+            widths={[420, 720]}
+            sizes="(max-width: 767px) 100vw, 420px"
+            loading="eager"
+          />
+          <span class="illustrative-badge">Illustrative Artwork — Awaiting Official Photo</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-sand">
+    <div class="container">
+      <div class="architecture-grid">
+        <div class="arch-media">
+          <div class="media-card">
+            <Picture
+              src={gopuramExterior}
+              alt="Illustrative architectural painting of a South Indian temple gopuram and courtyard"
+              formats={['avif', 'webp']}
+              widths={[420, 720]}
+              sizes="(max-width: 767px) 100vw, 460px"
+              loading="lazy"
+            />
+            <span class="illustrative-badge">Illustrative Artwork — Awaiting Official Photo</span>
+          </div>
+        </div>
+
+        <div class="arch-copy">
+          <span class="eyebrow">Architecture &amp; History</span>
+          <h2>Architecture, Features &amp; Sthala Puranam</h2>
+          <OrnamentalDivider compact />
+          <p>
+            Specific architectural notes (such as gopuram tiers, mandapams, dwajasthambam, and subsidiary sannidhis) as well as verified temple founding records and Sthala Puranam are intentionally held back until confirmed directly by temple management.
+          </p>
+
+          <NoticeBanner
+            tone="verification"
+            title="Pending Temple Administration Approval"
+            message="Historical founding dates, Sthala Puranam narratives, trustee/priest names, and temple lineage details are never assumed. Confirmed records from the temple administration will be added here."
+          />
+
+          <div class="about-cta">
+            <a href="/timings/" class="btn btn-primary">Check Darshan Timings</a>
+            <a href="/contact/" class="btn btn-outline-maroon">Visit &amp; Directions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-grid,
+  .architecture-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  @media (min-width: 820px) {
+    .about-grid {
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: var(--space-10);
+    }
+    .architecture-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: var(--space-10);
+      align-items: center;
+    }
+  }
+
+  .media-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid var(--color-gold-antique);
+    box-shadow: var(--shadow-card);
+    background-color: var(--color-maroon-dark);
+  }
+
+  .about-copy h3 {
+    margin-top: var(--space-6);
+  }
+
+  .about-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+</style>
